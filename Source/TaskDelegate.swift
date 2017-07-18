@@ -68,6 +68,9 @@ open class TaskDelegate: NSObject {
         initialResponseTime = nil
     }
 
+    // MARK: Retry
+    var taskFailedAndWillRetry: ((UInt, Error) -> Void)?
+
     // MARK: URLSessionTaskDelegate
 
     var taskWillPerformHTTPRedirection: ((URLSession, URLSessionTask, HTTPURLResponse, URLRequest) -> URLRequest?)?

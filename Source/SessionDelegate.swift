@@ -472,8 +472,12 @@ extension SessionDelegate: URLSessionTaskDelegate {
             retrier.should(sessionManager, retry: request, with: error) { [weak self] shouldRetry, timeDelay in
                 guard shouldRetry else { completeTask(session, task, error) ; return }
 
-                DispatchQueue.utility.after(timeDelay) { [weak self] in
-                    guard let strongSelf = self else { return }
+                guard let strongSelf = self else { return }
+                DispatchQueue.main.async {
+                    strongSelf[task]?.delegate.taskFailedAndWillRetry?(request.retryCount, error)
+                }
+
+                DispatchQueue.utility.after(timeDelay) {
 
                     let retrySucceeded = strongSelf.sessionManager?.retry(request) ?? false
 

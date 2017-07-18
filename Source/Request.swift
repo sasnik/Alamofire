@@ -236,6 +236,16 @@ open class Request {
     }
 }
 
+// MARK: - Retry
+
+extension Request {
+    @discardableResult
+    public func onRequestRetry(closure: @escaping ((UInt, Error) -> Void)) -> Self {
+        delegate.taskFailedAndWillRetry = closure
+        return self
+    }
+}
+
 // MARK: - CustomStringConvertible
 
 extension Request: CustomStringConvertible {
